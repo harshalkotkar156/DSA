@@ -1,0 +1,126 @@
+
+#include<bits/stdc++.h> 
+using namespace std; 
+
+struct Node 
+{ 
+	struct Node *left, *right; 
+	int data; 
+
+	bool lthread; 
+
+
+	bool rthread; 
+}; 
+
+struct Node *insert(struct Node *root, int ikey) 
+{ 
+	
+	Node *ptr = root; 
+	Node *par = NULL; 
+	while (ptr != NULL) 
+	{ 
+		
+		if (ikey == (ptr->data)) 
+		{ 
+			printf("Duplicate Key !\n"); 
+			return root; 
+		} 
+
+		par = ptr; 
+
+		if (ikey < ptr->data) 
+		{ 
+			if (ptr -> lthread == false) 
+				ptr = ptr -> left; 
+			else
+				break; 
+		} 
+
+		else
+		{ 
+			if (ptr->rthread == false) 
+				ptr = ptr -> right; 
+			else
+				break; 
+		} 
+	} 
+
+	// Create a new node 
+	Node *tmp = new Node; 
+	tmp -> data = ikey; 
+	tmp -> lthread = true; 
+	tmp -> rthread = true; 
+
+	if (par == NULL) 
+	{ 
+		root = tmp; 
+		tmp -> left = NULL; 
+		tmp -> right = NULL; 
+	} 
+	else if (ikey < (par -> data)) 
+	{ 
+		tmp -> left = par -> left; 
+		tmp -> right = par; 
+		par -> lthread = false; 
+		par -> left = tmp; 
+	} 
+	else
+	{ 
+		tmp -> left = par; 
+		tmp -> right = par -> right; 
+		par -> rthread = false; 
+		par -> right = tmp; 
+	} 
+
+	return root; 
+} 
+
+
+struct Node *inorderSuccessor(struct Node *ptr) 
+{ 
+
+	if (ptr -> rthread == true) 
+		return ptr->right; 
+
+	
+	ptr = ptr -> right; 
+	while (ptr -> lthread == false) 
+		ptr = ptr -> left; 
+	return ptr; 
+} 
+void inorder(struct Node *root) 
+{ 
+	if (root == NULL) 
+		printf("Tree is empty"); 
+
+	struct Node *ptr = root; 
+	while (ptr -> lthread == false) 
+		ptr = ptr -> left; 
+
+
+	while (ptr != NULL) 
+	{ 
+		printf("%d ",ptr -> data); 
+		ptr = inorderSuccessor(ptr); 
+	} 
+} 
+
+
+int main() 
+{ 
+	struct Node *root = NULL; 
+
+	root = insert(root, 20); 
+	root = insert(root, 10); 
+	root = insert(root, 30); 
+	root = insert(root, 5); 
+	root = insert(root, 16); 
+	root = insert(root, 14); 
+	root = insert(root, 17); 
+	root = insert(root, 13); 
+
+	inorder(root); 
+
+	return 0; 
+} 
