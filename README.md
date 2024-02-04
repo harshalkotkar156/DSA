@@ -1,2 +1,2 @@
 # DSA
-This file Contains All dsa Code of GFG POTD Solve
+This file Contains All DSA code of the SPPU University Assingments
